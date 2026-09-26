@@ -16,6 +16,42 @@ next version; bumping `package.json`'s `version` for that release is an
 owner decision (recommended: `2.1.0`, since nothing below is a breaking
 change to the token/CSS-hook contract).
 
+### Changed (second-pass review remediation, 2026-09-25)
+
+- `.github/workflows/{ci.yml,nightly.yml,release.yaml}` re-pin the
+  template sibling checkout to `d2b2f0ffc38407851e293e5a8a92d8863a0182d1
+  # 2.1.0 (unreleased)`and the`theme-tooling` sibling checkout to
+  `8fd9b36f85f4ae0a34dfb6ebb7c55319672071d2 # 0.1.0 (unpublished)`,
+  picking up contract-driven pseudo-class admission, the icon property
+  set, externalised contrast pairs (with three new adjacency floors), and
+  the Playwright+axe `visual:check` harness. `stylingContractDigest`
+  already byte-equalled the new pin's `catalogDigest`; no change needed
+  there. Added a `visual` job to `ci.yml` (installs Chromium, runs
+  `visual:check`, uploads screenshots as a build artifact).
+- `color-accent`/`color-link` (both palettes) move to a lighter plum
+  (`#b42e97` light, `#d350c7` dark) so the accent clears the new
+  accent-on-text ≥3:1 adjacency floor; `color-surface-raised` (both
+  palettes) moves to widen the surface/surface-raised adjacency to
+  ≥1.3:1. All previously-passing pairs still clear WCAG 2.2 AA.
+- `theme.json.slotHooks` no longer declares `landmark-main-content`: the
+  CSS never targeted `#main-content` directly (THM-M3 set-equality).
+- `a:visited` now renders `--gala-color-link-visited`, and `a:hover`
+  thickens the underline — the closed CSS-hook grammar admits both
+  pseudo-classes as of contract 2.1.0 (THD-M1).
+- The `hr` divider mark is now explicitly sized and centered
+  (`background-position`/`background-repeat`/`background-size`) instead
+  of tiling at the element's default background size (THD-H8).
+- Removed the redundant `text-decoration-line: underline` from print's
+  `a` override — the non-print rule already sets it, and the print layer
+  wins on any property it _does_ declare regardless (THD-L2).
+- `.github/workflows/release.yaml`'s path filter now also watches
+  `icons/mark.svg`, a packed file that previously could not trigger a
+  release on its own (THD-L5). No dead root `package-lock.json` exists to
+  remove; this repository is a closed 4-key `package.json` with no
+  `scripts`/`dependencies`, so nothing under `tooling/` is packed either.
+- Confirmed no theme-owned `prefers-reduced-motion` rule remains
+  (THD-L1) — removed in an earlier pass; nothing left to change.
+
 ### Changed (contract 2.1.0 adoption, 2026-09-25)
 
 - `theme.json.contractVersion` moves to `2.1.0` and `stylingContractDigest`

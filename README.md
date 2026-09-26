@@ -135,6 +135,16 @@ including the template conformance test), `duplication`, `sbom:check`, and
 result) and `workflows:drift` are available but deliberately not part of
 `verify`.
 
+`visual:check` (`node run.mjs visual:check --out <directory>`, or
+`npm --prefix tooling run visual:check -- --out <directory>`) drives the
+shared Playwright + axe-core harness (`@rathnasgala2/theme-tooling`'s
+`scripts/visual-check.mjs`, THD-M10) against this theme at 320/768/1440px
+in both palettes, failing on any `serious`/`critical` axe violation or
+horizontal overflow. It requires `npx playwright install chromium` first
+(a one-time, explicit download — never imposed on a bare `npm run
+verify`), and runs as its own `visual` job in `.github/workflows/ci.yml`,
+which uploads the six screenshots as a build artifact.
+
 ## The 35-token catalog and both palettes
 
 `theme.json.tokens` carries exactly the 35 keys DEC-097 §4 and the S2 brief
@@ -161,17 +171,15 @@ pairs clear 4.5:1; the non-text border/focus pairs clear 3:1.
 
 A theme is permitted to declare a token it does not itself consume —
 nothing in the contract requires every declared token to appear in that
-same theme's CSS. This theme now renders all but three of the 35
-(2026-09-25 review, THD-M1): `color-accent`/`color-on-accent` back the
-appearance control and the `article-end` divider (THA-M2), and
-`color-surface-raised`/`space-3`/`space-8` size the `blockquote` hook's
-background/padding and the `article-end` slot's top margin.
-`color-link-visited`, `color-success` and `color-warning` stay
-unreferenced: no admitted selector can target a visited link (the closed
-CSS-hook grammar does not yet parse single-colon pseudo-classes, see
-below) and no `publicThemeSlotHooks` atom exists for a success/warning
-status surface — both are contract/tooling-level gaps, not something a
-theme's own CSS can work around.
+same theme's CSS. This theme now renders all but two of the 35
+(2026-09-25 review): `color-accent`/`color-on-accent` back the appearance
+control and the `article-end` divider (THA-M2); `color-surface-raised`/
+`space-3`/`space-8` size the `blockquote` hook's background/padding and
+the `article-end` slot's top margin; and, with contract 2.1.0's
+pseudo-class admission, `color-link-visited` now backs `a:visited`
+(THD-M1). `color-success` and `color-warning` stay unreferenced: no
+`publicThemeSlotHooks` atom exists for a success/warning status surface —
+a contract-level gap, not something a theme's own CSS can work around.
 
 ## CSS and the 64-hook styling contract
 
@@ -185,20 +193,21 @@ scoped under the required root compound `[data-gala-publication-root]` (or
 its resolved-palette variant), joined only by the contract's four closed
 combinators (` `, `>`, `+`, `~`). Contract 2.1.0 publishes a five-member
 `pseudoClasses` catalog (`:focus-visible`, `:hover`, `:visited`, `:active`,
-`:disabled`, TPL-H2); this repository's own selector-conformance script
-(`@rathnasgala2/theme-tooling`'s `check-css-hooks.mjs`, shared across all
-five themes) does not yet parse single-colon pseudo-classes in a compound,
-so no theme can legally add one of these to its own stylesheets until that
-script is updated — a tooling gap, not a contract one. Focus-ring
-color/width customization is therefore still expressed entirely through
-tokens: the template's own `gala-base` layer (emitted before every theme
-stylesheet on every page) carries the one rule that turns
-`--gala-color-focus`/`--gala-focus-width` into a real, paintable
-`:focus-visible { outline-style: solid; ... }` ring, and no theme
-stylesheet declares `outline-color`/`outline-width`/`outline-style` at all
-— setting any of the first two without the third paints nothing (their
-initial value is `none`), and `gala-base`'s lower cascade precedence means
-an `outline-style` set here would win over it regardless.
+`:disabled`, TPL-H2), and `@rathnasgala2/theme-tooling`'s
+`check-css-hooks.mjs` (shared across all five themes) admits them in a
+compound as of the pinned `8fd9b36` tooling commit. This theme uses two
+of the five: `a:visited` (renders `--gala-color-link-visited`) and
+`a:hover` (thickens the underline) — see `THD-M1` in the changelog.
+Focus-ring color/width customization is still expressed entirely through
+tokens, not a theme-declared `:focus-visible` rule: the template's own
+`gala-base` layer (emitted before every theme stylesheet on every page)
+carries the one rule that turns `--gala-color-focus`/`--gala-focus-width`
+into a real, paintable `:focus-visible { outline-style: solid; ... }`
+ring, and no theme stylesheet declares
+`outline-color`/`outline-width`/`outline-style` at all — setting any of
+the first two without the third paints nothing (their initial value is
+`none`), and `gala-base`'s lower cascade precedence means an
+`outline-style` set here would win over it regardless.
 `theme.json.slotHooks` is the exact sorted set of the hook IDs this CSS
 actually uses (not the whole 64-hook catalog — only the subset a theme
 actually styles is declared, per the S2 brief).
