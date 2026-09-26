@@ -38,13 +38,16 @@
   [data-gala-publication-root] h1 {
     color: var(--gala-color-text);
     font-family: var(--gala-font-heading);
+    font-size: 2.5rem;
     font-weight: var(--gala-weight-heading);
+    letter-spacing: -0.01em;
     line-height: 1.2;
   }
 
   [data-gala-publication-root] h2 {
     color: var(--gala-color-text);
     font-family: var(--gala-font-heading);
+    font-size: 1.875rem;
     font-weight: var(--gala-weight-heading);
     line-height: 1.25;
   }
@@ -52,20 +55,28 @@
   [data-gala-publication-root] h3 {
     color: var(--gala-color-text);
     font-family: var(--gala-font-heading);
+    font-size: 1.5rem;
     font-weight: var(--gala-weight-heading);
+    line-height: 1.3;
   }
 
   [data-gala-publication-root] h4,
   [data-gala-publication-root] h5 {
     color: var(--gala-color-text);
     font-family: var(--gala-font-heading);
+    font-size: 1.25rem;
     font-weight: var(--gala-weight-strong);
+    line-height: 1.35;
   }
 
   [data-gala-publication-root] h6 {
     color: var(--gala-color-text-muted);
     font-family: var(--gala-font-heading);
+    font-size: 1rem;
     font-weight: var(--gala-weight-strong);
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    text-transform: uppercase;
   }
 
   [data-gala-publication-root] p {
@@ -76,14 +87,16 @@
   [data-gala-publication-root] a {
     color: var(--gala-color-link);
     text-decoration-line: underline;
-    /* THD-H1: a themed focus ring (`outline-color`/`outline-width`
-       alongside `outline-style: solid`, under `:focus-visible`) belongs
-       here, on `#main-content` and on `select` once the styling contract
-       publishes a pseudo-class catalog (TPL-H2). Until then, setting
-       `outline-style` unconditionally would paint a permanent ring on
-       every link, and `outline-color`/`outline-width` alone paint
-       nothing (the initial value of `outline-style` is `none`), so
-       neither is declared here. */
+    /* THD-H1/THA-M4: the focus ring itself is painted by the template's
+       own `gala-base` layer's `:focus-visible` rule, reading this
+       theme's `--gala-color-focus`/`--gala-focus-width` tokens. This
+       layer never repeats `outline-color`/`outline-width` here: the
+       longhands paint nothing without `outline-style` (its initial
+       value is `none`), and `gala-base`'s lower cascade precedence means
+       an `outline-style` set here would win over it anyway, so the only
+       correct way for a theme to affect the ring's thickness/colour is
+       through the tokens, never through its own `outline-*`
+       declarations. */
   }
 
   [data-gala-publication-root] blockquote {
@@ -134,7 +147,6 @@
 
   [data-gala-publication-root] img {
     border-radius: var(--gala-radius-small);
-    max-width: 100%;
   }
 
   [data-gala-publication-root] pre {
@@ -243,9 +255,15 @@
   }
 
   [data-gala-publication-root] [data-gala-slot="footer-profile"],
-  [data-gala-publication-root] [data-gala-slot="footer-auxiliary"],
+  [data-gala-publication-root] [data-gala-slot="footer-auxiliary"] {
+    color: var(--gala-color-text-muted);
+  }
+
   [data-gala-publication-root] [data-gala-slot="article-preamble"] {
     color: var(--gala-color-text-muted);
+    font-size: 1.125rem;
+    font-style: italic;
+    line-height: 1.5;
   }
 
   [data-gala-publication-root] [data-gala-slot="article-end"] {
@@ -263,50 +281,9 @@
     color: var(--gala-color-text);
   }
 
-  /* Character: expressive typography scale (S2-T14, theme-amaze). */
-  [data-gala-publication-root] h1 {
-    font-size: 2.5rem;
-    letter-spacing: -0.01em;
-  }
-
-  [data-gala-publication-root] h2 {
-    font-size: 1.875rem;
-  }
-
-  [data-gala-publication-root] h3 {
-    font-size: 1.5rem;
-  }
-
-  [data-gala-publication-root] h4,
-  [data-gala-publication-root] h5 {
-    font-size: 1.25rem;
-  }
-
-  [data-gala-publication-root] h6 {
-    font-size: 1rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  [data-gala-publication-root] [data-gala-slot="article-preamble"] {
-    font-size: 1.125rem;
-    font-style: italic;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    [data-gala-publication-root] {
-      animation-duration: 0.001ms !important;
-      transition-duration: 0.001ms !important;
-    }
-  }
-
   @media (forced-colors: active) {
     [data-gala-publication-root] a {
       color: LinkText;
-    }
-
-    [data-gala-publication-root] #main-content {
-      outline-color: Highlight;
     }
 
     [data-gala-publication-root] select {
