@@ -195,9 +195,11 @@ combinators (` `, `>`, `+`, `~`). Contract 2.1.0 publishes a five-member
 `pseudoClasses` catalog (`:focus-visible`, `:hover`, `:visited`, `:active`,
 `:disabled`, TPL-H2), and `@rathnasgala2/theme-tooling`'s
 `check-css-hooks.mjs` (shared across all five themes) admits them in a
-compound as of the pinned `8fd9b36` tooling commit. This theme uses two
+compound as of the pinned `ae2ee49` tooling commit. This theme uses two
 of the five: `a:visited` (renders `--gala-color-link-visited`) and
 `a:hover` (thickens the underline) — see `THD-M1` in the changelog.
+`a` also sets `text-decoration-skip-ink: auto` (THA-M5), a longhand the
+same tooling pin admits.
 Focus-ring color/width customization is still expressed entirely through
 tokens, not a theme-declared `:focus-visible` rule: the template's own
 `gala-base` layer (emitted before every theme stylesheet on every page)

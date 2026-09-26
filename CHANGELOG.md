@@ -16,6 +16,25 @@ next version; bumping `package.json`'s `version` for that release is an
 owner decision (recommended: `2.1.0`, since nothing below is a breaking
 change to the token/CSS-hook contract).
 
+### Changed (third-pass review remediation, 2026-09-25)
+
+- `.github/workflows/{ci.yml,nightly.yml,release.yaml}` re-pin the
+  `theme-tooling` sibling checkout from `8fd9b36` to
+  `ae2ee4979a4e5f6a4335c99b869f80eacd359788 # 0.1.0 (unpublished)`
+  (THD-M11), which serves the `visual:check` fixture over a loopback-only
+  HTTP server instead of `file://` so the theme's own stylesheets
+  actually load during the harness run, admits
+  `text-decoration-skip-ink` in the closed CSS grammar, and adds the
+  `color-accent`/`color-code-canvas` pair to the default contrast
+  catalog. Regenerated `theme.json`'s digest cycle against the new pin.
+- `a` now sets `text-decoration-skip-ink: auto` (THA-M5), so an
+  underline no longer cuts through a descender.
+- `npm --prefix tooling run visual:check` passes for all six
+  palette/viewport combinations (320/768/1440px, light and dark): zero
+  serious/critical axe violations, no horizontal overflow, and the
+  `color-accent`/`color-code-canvas` pair clears the new ≥3:1 floor
+  (4.62:1 light, 4.67:1 dark) with no token change needed.
+
 ### Changed (second-pass review remediation, 2026-09-25)
 
 - `.github/workflows/{ci.yml,nightly.yml,release.yaml}` re-pin the
