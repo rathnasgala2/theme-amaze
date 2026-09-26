@@ -137,6 +137,9 @@
 
   [data-gala-publication-root] hr {
     background-image: url("icons/mark.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 3rem 1.75rem;
     border: 0;
     height: 1.75rem;
     margin: var(--gala-space-6) 0;
