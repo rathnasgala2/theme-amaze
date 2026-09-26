@@ -2,7 +2,7 @@
   "schemaId": "urn:gala:schema:theme-contract:2.0.0",
   "schemaVersion": "2.0.0",
   "themeId": "amaze",
-  "package": "@rathnasgala2/theme-amaze@2.0.0",
+  "package": "@rathnasgala2/theme-amaze@2.1.0",
   "contractVersion": "2.1.0",
   "templateRange": "^2.0.0",
   "stylesheets": ["tokens.css", "components.css", "print.css"],
@@ -290,13 +290,13 @@
     "fixture-token-catalog-contrast"
   ],
   "browserPolicyRef": "gala-theme-css-v2-20211224",
-  "integrity": "sha256:520850368d8066f092eefde8edcf88245b01ba99e975dfd5526701ea60deadbd",
+  "integrity": "sha256:b19670fee52efe6d883ff0d3d0a3608843d5b77f5d3979074cef0ad62c2ac875",
   "budgets": {
     "maximumFileBytes": "16384",
     "maximumTotalBytes": "40960",
     "maximumFiles": 8
   },
   "fixtureDigest": "sha256:42ac8f857fb188b6e645f2d422fd87584f4a6273daaf1d0245a85698bd2a181a",
-  "evidenceDigest": "sha256:c150dd9002a896f5ee9116f18b0ce1d4cbdfe7777ea19604dd6965c5d144844e",
+  "evidenceDigest": "sha256:0473853755090efbadb05155b3951c93d4453efbcae95ced9ea6478012d8d02d",
   "stylingContractDigest": "sha256:4aca7e9794bddfb2c3afd22f4efd078e7dcf69dde9d62ce52d28cec19aef8b91"
 }
