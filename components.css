@@ -101,6 +101,14 @@
        declarations. */
   }
 
+  [data-gala-publication-root] a:visited {
+    color: var(--gala-color-link-visited);
+  }
+
+  [data-gala-publication-root] a:hover {
+    text-decoration-thickness: 0.15em;
+  }
+
   [data-gala-publication-root] blockquote {
     background-color: var(--gala-color-surface-raised);
     border-inline-start: var(--gala-border-width) solid var(--gala-color-border);
