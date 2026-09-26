@@ -16,6 +16,73 @@ next version; bumping `package.json`'s `version` for that release is an
 owner decision (recommended: `2.1.0`, since nothing below is a breaking
 change to the token/CSS-hook contract).
 
+### Changed (contract 2.1.0 adoption, 2026-09-25)
+
+- `theme.json.contractVersion` moves to `2.1.0` and `stylingContractDigest`
+  now byte-equals the published contract's `catalogDigest`; `templateRange`
+  (`^2.0.0`) is unchanged and still admits the template's current published
+  version. `cssLayers` already excluded `gala-base` (the template's own
+  layer, never a theme's to declare).
+- Removed the fifth inert `outline-color` declaration
+  (`#main-content` under `forced-colors: active`), the theme's own
+  `prefers-reduced-motion: reduce` rule, and the duplicate `img`
+  `max-width: 100%` declaration: the template's new `gala-base` layer
+  (TPL-H3) now supplies all three — plus box-sizing, the skip-link
+  pattern, and the real `:focus-visible` ring that finally makes
+  `--gala-color-focus`/`--gala-focus-width` paint (THD-H1/THA-M4 fully
+  resolved: no theme-side `outline-*` declaration remains anywhere).
+- Merged the heading "character" block into the base component rules
+  (THA-M3): each heading is now one rule instead of two ~200 lines apart
+  depending on source order, and every `font-size` is paired with an
+  explicit `line-height`.
+
+### Changed (THA-H1, 2026-09-25)
+
+- Converted the heading scale, body paragraphs, list items and code/pre
+  blocks to `clamp()`-based fluid sizing instead of a fixed-rem ramp
+  scoped to headings only, so the scale moves smoothly between a phone
+  and a desktop viewport. Body text/list items step from 1rem to
+  1.0625rem with a slightly looser 1.7 line-height, bringing the 44rem
+  measure's desktop line length closer to a comfortable 65-70 characters.
+
+### Changed (THA-M1, THA-M2, 2026-09-25)
+
+- `heading-6` no longer sets `text-transform`/`letter-spacing`; the
+  uppercase/tracked eyebrow treatment moves to the `article-preamble`
+  slot, which already carried this theme's italic lead. `heading-6` keeps
+  a bold weight and a font-size floor above body's ceiling.
+- `color-accent`/`color-on-accent` now render on a real surface — the
+  appearance control's background/border/text and the `article-end`
+  divider's border color — instead of being declared and unused.
+
+### Changed (THD-H8, THD-M1, THA-L1, 2026-09-25)
+
+- Added `icons/mark.svg`, a sanitiser-clean passive SVG asset (this
+  theme's one reference icon), referenced from the `hr` hook as a small
+  repeating ornament. `color-surface-raised`/`space-3`/`space-8` now back
+  the `blockquote` hook's background/padding and the `article-end` slot's
+  top margin. `color-link-visited`/`color-success`/`color-warning` remain
+  unreferenced — no admitted selector can target a visited link yet (the
+  closed CSS-hook grammar does not parse pseudo-classes), and no
+  `publicThemeSlotHooks` atom exists for a success/warning surface.
+- `heading-1`-`heading-3` now carry graded negative letter-spacing instead
+  of a single fixed value on `heading-1` only (THA-L1).
+- The internal ticket id previously carried in the character-block
+  comment (THA-L2) is gone as a side effect of the THA-M3 merge above;
+  the comment it named no longer exists.
+
+### Changed (pins, 2026-09-25)
+
+- `.github/workflows/{ci.yml,nightly.yml,release.yaml}` pin the template
+  sibling checkout to `e66d8771189966db1f8f876b005ab59d4f676bcb # 2.1.0
+(unreleased)` and the `theme-tooling` sibling checkout to
+  `68dceb301c071f3a60c2bf4c4f3215a6c3478502 # 0.1.0 (unpublished)`.
+
+Recommended release for everything in this section plus the prior
+`Unreleased` entries below: **2.1.0** (minor) — contract 2.1.0 adoption,
+the fluid type scale and the reference icon are additive; nothing here
+removes or renames a published token, hook or file.
+
 ### Changed (THD-H1, 2026-09-25)
 
 - Removed the four inert `outline-color`/`outline-width` declaration pairs
