@@ -64,8 +64,8 @@
     {
       "key": "color-accent",
       "type": "color",
-      "light": "#7a1f66",
-      "dark": "#e79fe0"
+      "light": "#b42e97",
+      "dark": "#d350c7"
     },
     {
       "key": "color-border",
@@ -106,8 +106,8 @@
     {
       "key": "color-link",
       "type": "color",
-      "light": "#7a1f66",
-      "dark": "#e79fe0"
+      "light": "#b42e97",
+      "dark": "#d350c7"
     },
     {
       "key": "color-link-visited",
@@ -142,8 +142,8 @@
     {
       "key": "color-surface-raised",
       "type": "color",
-      "light": "#e8ddcb",
-      "dark": "#2f2216"
+      "light": "#dbc9ad",
+      "dark": "#453220"
     },
     {
       "key": "color-text",
