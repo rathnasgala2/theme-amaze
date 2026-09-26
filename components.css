@@ -89,6 +89,7 @@
   [data-gala-publication-root] a {
     color: var(--gala-color-link);
     text-decoration-line: underline;
+    text-decoration-skip-ink: auto;
     /* THD-H1/THA-M4: the focus ring itself is painted by the template's
        own `gala-base` layer's `:focus-visible` rule, reading this
        theme's `--gala-color-focus`/`--gala-focus-width` tokens. This
