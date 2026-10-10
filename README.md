@@ -1,453 +1,61 @@
 # @rathnasgala2/theme-amaze
 
-One of the five `@rathnasgala2/theme-*` presentation packages for
-Galascribe portable publications (`@rathnasgala2/template@^2.0.0`). This
-package is a **closed, passive file set**: JSON and CSS only, no
-JavaScript, no build step, no runtime dependency, no lifecycle script.
-Unlike `@rathnasgala2/theme-default`, this package is never the build's
-fallback; a build resolves to this theme only when a publication's own
-`appearance.theme` names it.
+The Amaze presentation theme (editorial magazine: serif display type, generous measure, magenta accent)
+for Galascribe portable publications (`@rathnasgala2/template@^3.0.0`). A build uses it only when a publication's `appearance.theme`
+names it. This package is a **closed, passive file set**: JSON and CSS
+only, no JavaScript, no build step, no runtime dependency, no lifecycle
+script. A missing selected theme fails a build rather than silently changing
+appearance.
 
-## What this package is
+Since 3.0.0 the template owns page layout and component structure. This
+theme supplies design values (the 116-token contract) plus a small amount of
+skin CSS.
 
-Per task packet S2-T14 (S2 "author-owned publication" brief §4, authority
-DEC-017 / doc 13 `urn:gala:schema:theme-contract:2.0.0` / doc 26 §3 /
-DEC-097 §4 — S2-T14 satisfies the identical closed-package/token/hook/
-digest-cycle shape `@rathnasgala2/theme-default` (S2-T13) established,
-with this theme's own distinct token values and component rules), the
-packed regular-file set (after npm's mandatory `package/`
-prefix is stripped) is exactly:
+## Files
 
-```text
-package.json
-theme.json
-tokens.css
-components.css
-print.css
-icons/mark.svg
-LICENSE
-README.md
-```
+- `package.json`: exactly `name`, `version`, `license`, `repository`, `files`.
+- `theme.json`: validated against `urn:gala:schema:theme-contract:2.0.0`
+  (schema package 3.0.0). It carries the identity, `templateRange`
+  (`^3.0.0`), the stylesheet and layer projection, the template styling hooks
+  the CSS uses (`slotHooks`), both palettes for all 116 tokens, asset
+  digests, size budgets, and `stylingContractDigest` (the template's styling
+  contract 3.0.0).
+- `tokens.css`: generated from `theme.json` by `tokens:generate`. Never edit
+  it by hand; `tokens:check` fails if it drifts from `theme.json`.
+- `components.css`: a small skin layer (cards, chips, avatars, strong text)
+  that uses tokens only.
+- `print.css`: print rules.
+- `LICENSE`, `README.md`.
 
-`utilities.css` is the optional fourth stylesheet in the two valid
-`stylesheets`/`cssLayers` shapes; this theme uses the three-file shape
-(`tokens.css`, `components.css`, `print.css`) with no `utilities.css`, plus
-one passive asset: `icons/mark.svg`, a sanitiser-clean SVG mark referenced
-from `components.css`'s `hr` rule (2026-09-25 review, THD-H8) — this
-theme's one reference icon.
+Token values are the owner-approved Amaze preview values; `theme.json` is
+their only source (edit tokens there, then run `tokens:generate`).
 
-- **`package.json`** is DEC-097's closed, dependency-free, script-free
-  object: exactly `name`, `version`, `license`, `files` (the unique
-  UTF-8-byte-sorted set `["components.css","icons/mark.svg","print.css","theme.json","tokens.css"]`).
-  It has no `scripts`, no `dependencies`, no `devDependencies`, no `engines`
-  field — those constraints belong to `tooling/` (below), never to the
-  published package identity.
-- **`theme.json`** binds the theme's schema (`theme-contract:2.0.0`),
-  identity, its target styling `contractVersion` (`2.1.0`) and the matching
-  `stylingContractDigest`, compatible template range (`^2.0.0`), the exact
-  stylesheet/layer projection, the closed subset of the template's 64
-  public styling hooks this theme's CSS actually targets, both palettes
-  for all 35 closed tokens, the asset inventory (three `text/css`
-  stylesheets and one `image/svg+xml` passive icon), declared budgets, and
-  the `fixtureDigest`/`evidenceDigest`/`stylingContractDigest`/`integrity`
-  digest chain (see "Digest cycle" below).
-- **`LICENSE`** is not license _text_; it is compact-JCS (RFC 8785) license
-  _evidence_ — `profile: "gala-theme-license-evidence-v2"`, the SPDX
-  3.28.0 license-list version/digest this package's toolchain generated
-  from, `packageExpression: "Apache-2.0"`, an empty `assetOverrides` (no
-  per-asset license override; the whole package is one expression), and one
-  `catalogEntries` row carrying the verbatim SPDX Apache-2.0 license text.
-  This is the same shape DEC-097 §4/§8 calls the package's "compact-JCS
-  `LICENSE` closure."
+## Commands
 
-## Visual character
-
-Expressive typography scale: a fluid, `clamp()`-based heading-through-body
-scale (`heading-1`..`heading-6`, `p`, `li`, `code`/`pre` all size and pair a
-line-height with it, not headings alone), graded negative tracking across
-`heading-1`-`heading-3`, an uppercase/tracked eyebrow treatment on the
-`article-preamble` slot's italic lead (moved off `heading-6`, 2026-09-25
-review, THA-M1), roomier `space-*`/`content-measure`/`radius-*` tokens, a
-warm ivory canvas, and a plum accent/link pair — the accent now renders on
-the appearance control and the `article-end` divider, not only through
-`color-link` (THA-M2). A small passive SVG mark (`icons/mark.svg`) repeats
-along the `hr` hook as this theme's one reference icon (THD-H8). See
-`tokens.css` for every token value and `components.css` for the
-character-specific component rules; every rule not named above is the same
-token-driven structure `@rathnasgala2/theme-default` uses.
-
-## Toolchain and how to run locally
-
-Node `24.18.0` / npm `11.16.0` exactly (`.nvmrc`/`.node-version` at the repo
-root pin this; the closed `package.json` above cannot carry an `engines`
-field, so pinning lives in these files instead, exactly as this repository's
-own tooling does).
-
-Because the published `package.json` cannot carry `devDependencies` or
-`scripts` (they would be packed into the published tarball, breaking the
-closed shape DEC-097 requires), every lint/test/build/SBOM/release command
-for this repository is implemented in **`@rathnasgala2/theme-tooling`**
-(a separate repository shared by all five `@rathnasgala2/theme-*`
-packages — 2026-09-25 code-discipline review, THD-M6: this used to be 25
-files hand-copied into every theme's own `tooling/`, with the packed file
-list hardcoded three times over, and guarded only by a `tooling/test/
-tooling-drift.test.mjs` that skipped in every CI configuration these
-repositories had, THD-H3). This repository's own `tooling/` directory now
-carries only `run.mjs` (resolves the shared tooling and dispatches into
-it) and a `package.json` whose scripts are one-line calls into it;
-`tooling-drift.test.mjs` no longer exists — there is one copy of this
-tooling now, so there is nothing left to drift:
+Node 24.18.0 (see `.nvmrc`). `tooling/` is private and never packed; every
+gate lives in `@rathnasgala2/theme-tooling` and is reached through
+`tooling/run.mjs`.
 
 ```sh
-source ~/.nvm/nvm.sh && nvm use 24.18.0
-GALA_THEME_TOOLING_DIR=../../theme-tooling npm --prefix tooling run verify
+export GALA_THEME_TOOLING_DIR=../theme-tooling   # checkout of theme-tooling
+export GALA_TEMPLATE_DIR=../template             # checkout of the template
+npm --prefix tooling run tokens:generate         # theme.json tokens -> tokens.css
+npm --prefix tooling run digest:generate         # run twice; second run must change nothing
+npm --prefix tooling run verify
 ```
 
-`@rathnasgala2/theme-tooling` is not yet published to the npm registry
-(publishing it is an owner decision), so it is resolved **only** through
-the `GALA_THEME_TOOLING_DIR` environment variable, pointing at a checkout
-of it — `run.mjs` fails closed with the exact fix if it is unset. See
-`../theme-tooling/README.md` "Status: not yet published" for the full
-explanation, what changes once it is published, and why a `file:`
-specifier is not used instead (not acceptable for CI: it resolves to a
-path that does not exist on a fresh checkout). In CI, every workflow in
-`.github/workflows/` checks out `theme-tooling` to a pinned commit
-alongside this repository, exactly like the `@rathnasgala2/template`
-sibling checkout below.
+Re-run `digest:generate` after editing `theme.json`, `tokens.css`,
+`components.css` or `print.css`. It recomputes asset digests and the chain
+`fixtureDigest`, `evidenceDigest`, `integrity`.
 
-`npm run verify` (via `tooling`, defined once in `theme-tooling/bin/cli.mjs`
-so this list cannot drift from what actually runs — THD-M11) runs, in
-order: `format:check`, `lint`, `schema:check` (theme.json structural
-validation against `urn:gala:schema:theme-contract:2.0.0`), `css:check`
-(the closed-hook selector conformance test), `grammar:check` (closed CSS
-property/at-rule allowlist and a rule-count ceiling), `contrast:check`
-(WCAG 2.2 AA contrast-ratio assertions for both palettes), `budgets:check`
-(the declared `theme.json.budgets` ceilings, enforced), `package:check`
-(closed file-set / `0644` mode / `package.json` shape), `absence:check`
-(no JavaScript/executable/remote-reference constructs anywhere in the
-packed set), `schema-pin:check`, `digest:check` (the digest cycle, checked
-against the committed `theme.json` in a scratch copy — never regenerated
-in place; see "Digest cycle" below), `test` (the full `node --test` suite,
-including the template conformance test), `duplication`, `sbom:check`, and
-`audit`. `workflows:check` runs as part of CI (a separate step; see
-`.github/workflows/ci.yml`). `digest:generate` (rewrites the real
-`theme.json`; run by hand after editing a stylesheet, then commit the
-result) and `workflows:drift` are available but deliberately not part of
-`verify`.
+Neither `@rathnasgala2/template` nor `@rathnasgala2/theme-tooling` is an npm
+dependency here; both are resolved by path through the two environment
+variables above (CI checks them out at pinned commits).
 
-`visual:check` (`node run.mjs visual:check --out <directory>`, or
-`npm --prefix tooling run visual:check -- --out <directory>`) drives the
-shared Playwright + axe-core harness (`@rathnasgala2/theme-tooling`'s
-`scripts/visual-check.mjs`, THD-M10) against this theme at 320/768/1440px
-in both palettes, failing on any `serious`/`critical` axe violation or
-horizontal overflow. It requires `npx playwright install chromium` first
-(a one-time, explicit download — never imposed on a bare `npm run
-verify`), and runs as its own `visual` job in `.github/workflows/ci.yml`,
-which uploads the six screenshots as a build artifact.
+## Rules
 
-## The 35-token catalog and both palettes
-
-`theme.json.tokens` carries exactly the 35 keys DEC-097 §4 and the S2 brief
-§4 close the catalog to, in the fixed order the `theme-contract:2.0.0`
-schema's `tokens` array enforces (`border-width`, the 17 `color-*` keys,
-`content-measure`, `focus-width`, the 3 `font-*` keys, `radius-medium`,
-`radius-small`, the 6 `space-*` keys, and the 4 `weight-*` keys). Every
-`color-*` key differs by palette; every other key's `light`/`dark` value is
-identical (its type does not carry a palette-dependent value). Every custom
-property is `--gala-<key>`, only ever declared inside `tokens.css`'s
-`@layer gala-tokens` block, scoped to the template's own
-`resolvedPaletteSelectors` (`[data-gala-publication-root][data-gala-resolved-color-mode="light"]`
-/ `="dark"`) — the same selectors published in
-`@rathnasgala2/template`'s `contracts/theme-styling-contract.jcs`.
-
-`tooling/test/tokens-contrast.test.mjs` computes WCAG relative-luminance contrast
-ratios (the standard sRGB-linearized formula) for every token pair the S2
-brief names — body text, muted text, links (unvisited/visited), danger/
-warning/success status text, on-accent text, code text, and the border/
-focus non-text UI pair — against their governing canvas/surface/accent
-color, in **both** palettes independently (passing one palette never
-substitutes for the other, per the brief). All body/link/status/code text
-pairs clear 4.5:1; the non-text border/focus pairs clear 3:1.
-
-A theme is permitted to declare a token it does not itself consume —
-nothing in the contract requires every declared token to appear in that
-same theme's CSS. This theme now renders all but two of the 35
-(2026-09-25 review): `color-accent`/`color-on-accent` back the appearance
-control and the `article-end` divider (THA-M2); `color-surface-raised`/
-`space-3`/`space-8` size the `blockquote` hook's background/padding and
-the `article-end` slot's top margin; and, with contract 2.1.0's
-pseudo-class admission, `color-link-visited` now backs `a:visited`
-(THD-M1). `color-success` and `color-warning` stay unreferenced: no
-`publicThemeSlotHooks` atom exists for a success/warning status surface —
-a contract-level gap, not something a theme's own CSS can work around.
-
-## CSS and the 64-hook styling contract
-
-`tokens.css`, `components.css` and `print.css` are each one outer `@layer`
-block (`gala-tokens`, `gala-components`, `gala-print` respectively, matching
-`theme.json.cssLayers`) and target **only** the template's published,
-closed 64-entry `publicThemeSlotHooks` catalog from
-`@rathnasgala2/template`'s `contracts/theme-styling-contract.jcs` — the
-landmark/heading/prose/code/control/media/page-kind/slot hooks, always
-scoped under the required root compound `[data-gala-publication-root]` (or
-its resolved-palette variant), joined only by the contract's four closed
-combinators (` `, `>`, `+`, `~`). Contract 2.1.0 publishes a five-member
-`pseudoClasses` catalog (`:focus-visible`, `:hover`, `:visited`, `:active`,
-`:disabled`, TPL-H2), and `@rathnasgala2/theme-tooling`'s
-`check-css-hooks.mjs` (shared across all five themes) admits them in a
-compound as of the pinned `ae2ee49` tooling commit. This theme uses two
-of the five: `a:visited` (renders `--gala-color-link-visited`) and
-`a:hover` (thickens the underline) — see `THD-M1` in the changelog.
-`a` also sets `text-decoration-skip-ink: auto` (THA-M5), a longhand the
-same tooling pin admits.
-Focus-ring color/width customization is still expressed entirely through
-tokens, not a theme-declared `:focus-visible` rule: the template's own
-`gala-base` layer (emitted before every theme stylesheet on every page)
-carries the one rule that turns `--gala-color-focus`/`--gala-focus-width`
-into a real, paintable `:focus-visible { outline-style: solid; ... }`
-ring, and no theme stylesheet declares
-`outline-color`/`outline-width`/`outline-style` at all — setting any of
-the first two without the third paints nothing (their initial value is
-`none`), and `gala-base`'s lower cascade precedence means an
-`outline-style` set here would win over it regardless.
-`theme.json.slotHooks` is the exact sorted set of the hook IDs this CSS
-actually uses (not the whole 64-hook catalog — only the subset a theme
-actually styles is declared, per the S2 brief).
-
-`tooling/test/css-hooks.test.mjs` parses every stylesheet with `postcss` (a pinned
-exact version) and `postcss-selector-parser`, and fails the build if any
-selector uses an attribute/class/id/type atom that is not one of the
-template's published 64 `publicThemeSlotHooks` selector atoms or the
-required root/palette scoping compounds.
-
-`components.css`'s `::selection` rule (THD-M9), where this theme declares
-one, is scoped to the root compound only
-(`[data-gala-publication-root]::selection`), the only form the contract
-admits — `::selection, *::selection` (the conventional, maximally portable
-form) is not legal here, since `*` is not a hook atom and the first
-compound must be the root. Current Chromium and Firefox inherit
-highlight-pseudo styling down the originating-element chain from an
-ancestor's `::selection`, which covers this case; Safari's behaviour has
-historically differed. Nothing further is possible theme-side under
-today's contract.
-
-`tooling/.jscpd.json`'s duplication scan (`jscpd` 3% / 50 tokens,
-implementer-rules gate) deliberately excludes `tokens.css`: its light/dark
-`@layer gala-tokens` blocks repeat the same 35 custom-property _names_
-against different literal color/length/font values by construction (a flat
-custom-property declaration has no legitimate way to factor that
-repetition out while keeping every value an independently-readable
-literal, and it is data — token values — not logic). `components.css` and
-`print.css` stay in scope and are refactored (grouped selectors, e.g.
-`h4, h5` and the three muted-text slot hooks) wherever a real duplicate
-declaration block existed.
-
-## Accessibility posture
-
-- **Contrast**: see above; asserted by test, both palettes, WCAG 2.2 AA.
-- **Focus visibility**: no `outline: none`/`outline-style: none`, and no
-  `outline-color`/`outline-width`/`outline-style` declaration of any kind,
-  anywhere in this theme's own CSS (2026-09-25 review, THD-H1/THA-M4). A
-  themed ring is a real, paintable `:focus-visible { outline-style: solid;
-outline-width: var(--gala-focus-width, 2px); outline-color:
-var(--gala-color-focus, Highlight); }` rule in the template's own
-  `gala-base` layer (TPL-H3), which reads this theme's tokens — this
-  theme's `--gala-focus-width: 3px` (the widest of the five reference
-  themes, a deliberate WCAG 2.2 SC 2.4.13 response) now actually reaches a
-  pixel. Earlier revisions of this file claimed the theme's own
-  `outline-color`/`outline-width` longhands produced the visible ring; that
-  was always false (their initial `outline-style` is `none`, so they paint
-  nothing on their own), and the declarations have been removed rather than
-  restored, since the mechanism that makes them meaningful is template-side.
-- **`forced-colors: active`**: `components.css` maps links and select
-  borders to system colors (`LinkText`, `ButtonBorder`) so meaning survives
-  a forced-colors palette, per the brief's "forced-colors mode takes
-  precedence where the browser supplies system colors." The main-content
-  focus-ring mapping this section previously described was removed with
-  the rest of the inert `outline-color` declarations (THD-H1): a forced-
-  colors `outline-color` with no `outline-style` was exactly as inert as
-  the other four, and forced-colors focus visibility is now `gala-base`'s
-  responsibility along with the ring itself.
-- **`prefers-reduced-motion: reduce`**: handled entirely by the template's
-  own `gala-base` layer, which collapses animation/transition duration and
-  iteration count for every element and pseudo-element on the page. This
-  theme's own copy of that guard (root-scoped only, and a strict subset of
-  `gala-base`'s) has been removed as redundant.
-- **Zoom/reflow**: this theme sets no fixed pixel widths that would prevent
-  320px-wide reflow (`main`'s `max-width` is a `rem` content measure, never
-  a lower bound); Playwright-driven 400% zoom/reflow, keyboard-journey and
-  axe-core runs are S2-T22, explicitly out of this task's scope.
-
-## Digest cycle (`fixtureDigest`, `evidenceDigest`, `integrity`)
-
-`@rathnasgala2/theme-tooling`'s `scripts/generate-theme-digests.mjs`
-implements DEC-097 §4/§8's acyclic digest construction using
-the exact domain-separated SHA-256 formulas DEC-097 §8 publishes
-(`GALA-THEME-FIXTURE-RELEASE-V2\0`, `GALA-THEME-CONFORMANCE-INPUT-V2\0`,
-`GALA-THEME-CONFORMANCE-EVIDENCE-V2\0`, `GALA-THEME-PACKAGE-INTEGRITY-V2\0`)
-over RFC 8785 JCS-canonicalized entries, reproduced independently in this
-repository (the formulas are DEC-097's public specification; the reference
-implementation in `@rathnasgala2/schemas`'s internal
-`theme-composition-semantics.js` is not part of that package's published
-`exports` map, so it cannot be imported as a dependency — only its
-documented algorithm is reused here):
-
-1. **`stylingContractDigest`** is copied verbatim from
-   `@rathnasgala2/template`'s published `contracts/theme-styling-contract.jcs`
-   `catalogDigest` field — the same value every theme package targeting
-   this template version carries.
-2. **`fixtureDigest`** is computed over a small **local** conformance
-   fixture release this repository defines itself (`schema`, `semantic`,
-   `package`, `css`, `absence` runners — see "What `fixtureDigest`/
-   `evidenceDigest` are, and are not" below) — independent of this
-   package's own file bytes.
-3. **`themeConformanceInputDigest`** (an intermediate value, not itself a
-   `theme.json` field) is computed over the packed package projection with
-   `theme.json`'s `integrity` and `evidenceDigest` fields both absent.
-4. **`evidenceDigest`** is computed over a conformance-result record
-   naming `fixtureDigest` and `themeConformanceInputDigest`, once every
-   local runner in step 2 has actually run against this package's real
-   files and recorded a real pass.
-5. **`integrity`** is computed last, over the packed package projection
-   with only `integrity` itself absent (so it is the only field excluded
-   from its own preimage) — the completed `theme.json` (steps 1–4 already
-   written) is what gets hashed.
-
-Each local runner's `executableDigest` (part of `fixtureDigest`'s
-`runners` array) hashes that runner script's own bytes **as pinned in
-`@rathnasgala2/theme-tooling`** — i.e. it is a snapshot of the exact
-`theme-tooling` commit `.github/workflows/ci.yml`/`release.yaml` pin (see
-the "Check out the theme-tooling sibling repository" step), not of
-anything in this repository. Bumping that pin to a commit that changed any
-of `check-theme-schema.mjs`, `check-contrast.mjs`,
-`check-package-file-set.mjs`, `check-css-hooks.mjs`, or
-`check-forbidden-constructs.mjs` (the five `LOCAL_RUNNERS` scripts —
-`scripts/generate-theme-digests.mjs` in `theme-tooling`) changes those
-`executableDigest` values and therefore `theme.json` itself: run
-`digest:generate` again and commit the result in the same change that
-bumps the pin, or `digest:check` fails. A pin bump that only touches other
-`theme-tooling` files (as THD-M6's SBOM fix did) leaves every
-`executableDigest` unchanged.
-
-Running `digest:generate` twice in a row on an unchanged source tree
-reproduces byte-identical `theme.json` bytes both times (idempotent; no
-wall-clock, machine-identity, or non-deterministic input participates) —
-`digest-cycle.test.mjs` asserts this directly, against a scratch copy,
-independent of the whole-repository two-build-cycle conformance test
-below. `digest:check` (part of `verify`) is a separate, stricter
-assertion: it copies the packed file set into a scratch directory,
-regenerates there, and diffs the result against the **committed**
-`theme.json` — it never runs the generator over the real file (2026-09-25
-review, THD-H2: the previous implementation ran the un-flagged
-`digest:generate` immediately before `digest:check` in both `verify` and
-CI, so `--check` compared two generations of the same run and could never
-fail regardless of what was actually committed). `digest:generate` is
-therefore no longer part of `verify` or CI at all — it is a local-dev-only
-command, run by hand after editing a stylesheet, with the result committed.
-
-### What `fixtureDigest`/`evidenceDigest` are, and are not
-
-DEC-097 §4 describes `fixtureDigest`/`evidenceDigest` as binding "the exact
-shared fixture release" and "the retained conformance result" produced by
-the reusable `infra/.github/workflows/theme-release.yml` runner
-(S2-T11: `schema`/`semantic`/`package`/`css`/`binary`/`browser`/`a11y`/
-`absence`). That workflow is infra/CI scope, `REMOTE-ONLY` per the S2
-digest, and does not exist in this local environment yet (LOCAL-4: do not
-fabricate remote evidence). The digests this package ships are therefore
-**genuine, locally-computed evidence from this repository's own real local
-runners** (`schema`, `semantic`, `package`, `css`, `absence` — five of the
-eight runner IDs; `binary` has nothing to validate since this theme
-declares no non-CSS assets, and `browser`/`a11y` are Playwright/axe-core,
-explicitly S2-T22's task, not this one) — not a fabricated stand-in for the
-eventual shared CI fixture release, and not the DEC-097-mandated _shared_
-release (which by definition must be identical bytes across all five theme
-packages; this package's fixture release is this package's own, until
-S2-T11 exists and re-issues a real shared one). This is called out
-explicitly here, in `theme.json`'s own generation script, and in the
-report handed to the orchestrator, so it is never mistaken for `S2-T11`
-CI evidence.
-
-## Consuming the template by path
-
-`tooling`'s conformance test (`tooling/test/template-conformance.test.mjs`)
-needs a real `@rathnasgala2/template@2.0.0` build to render against. Locally,
-no registry-published `@rathnasgala2/template` tarball exists yet (LOCAL-4),
-and — per independent review of an earlier version of this package — a
-`file:` npm dependency on a git checkout is not durable release evidence
-either (a worktree in particular is explicitly temporary: "never run `git
-worktree remove`; the orchestrator does that after merge" governs the
-_orchestrator's_ lifecycle for it, not this package's own dependency
-graph, and pulling that checkout's own independent lockfile/`node_modules`
-into `tooling`'s tree is exactly what polluted `npm ls`/SBOM output
-before this fix).
-
-So `@rathnasgala2/template` is resolved **by path, at test/script run
-time, never as an npm dependency**: `resolve-template-dir.mjs` (in
-`@rathnasgala2/theme-tooling`) exports `resolveTemplateDir()`, which
-returns `$GALA_TEMPLATE_DIR` if that environment variable is set to a
-non-empty value, else the default `../../template` resolved against the
-current working directory (every consumer of this helper always runs with
-this repository's `tooling/` as its cwd, so that default is the sibling
-checkout `<workspace-root>/template`, matching how
-`publish-kernel`/`publish-action` will eventually resolve a theme/template
-package directory from an adapter-local extraction, not from
-`node_modules`). Every consumer (`check-css-hooks.mjs`,
-`rich-build-input.mjs`, `template-conformance.test.mjs`) reads
-`contracts/*.jcs` directly off disk under that directory, and dynamically
-`import()`s its `src/core/index.js` (the exact file its own `exports["."]`
-maps to) by file URL for `renderPublication`/`computeBodyDigest` — no
-test-internal helper or private module of the template repository is
-imported, and no template code ever appears in this repository's own
-`npm ls`/SBOM output.
-
-Set `GALA_TEMPLATE_DIR` to override the default — for example, while a
-local sibling checkout's currently-checked-out branch does not yet carry
-the template revision this package's tests need.
-
-`resolveTemplateDir()` also honours `WORKSPACE_ROOT` (DEC-015 name),
-checked after `GALA_TEMPLATE_DIR` and before the fixed relative default:
-when set to a non-empty value, the template checkout resolves as
-`<WORKSPACE_ROOT>/template` instead of the fixed relative
-`../../template`. This is the fix for running `tooling`'s commands from a
-location where that fixed relative default cannot reach the sibling
-`template` checkout (for example, a git worktree one level deeper than the
-real checkout) without needing a one-off `GALA_TEMPLATE_DIR`: set
-`WORKSPACE_ROOT=<the directory containing the sibling repository
-checkouts>` once and every sibling resolves correctly. CI sets it to
-`${{ github.workspace }}` (see `.github/workflows/ci.yml`).
-
-The conformance test builds its own build-input fixture in
-`tooling/test/fixtures/rich-build-input.mjs`, based on
-`@rathnasgala2/schemas`'s own published `examples/valid/build-input/canonical.json`
-(that example's `appearance.theme` already names
-`@rathnasgala2/theme-amaze@2.0.0`), with a real render-policy identity
-(reproducing `@rathnasgala2/template`'s own
-`GALA-RENDER-POLICY-V2\0`-domain-separated digest over its published
-`contracts/render-policy.jcs`, since that computation is not part of the
-template's public `exports`) and a real `bodyDigest` (via the template's
-own exported `computeBodyDigest`). It calls `renderPublication(buildInput,
-{ outputDirectory, workDirectory, sourceDirectory, themeDirectory: <this
-package's own repo root>, provenance })` twice into two fresh output
-directories and asserts every rendered route/asset file is byte-identical
-between the two runs.
-
-## Forbidden constructs
-
-`tooling/test/forbidden-constructs.test.mjs` and `tooling/test/package-file-set.test.mjs`
-together assert: no `.js`/`.mjs`/`.cjs`/`.ts`/`.tsx`/`.jsx`/`.wasm`/`bin`
-file anywhere in the packed set; no `<script>`, `javascript:`, `expression(`,
-`@import`, external `url(...)` (only package-relative/normalized-path
-`url()` values would be admitted, and this theme declares none), or
-`-moz-binding` construct in any packed CSS byte; every packed member is a
-regular `0644` file; `package.json` carries no `dependencies` and no
-`scripts`.
-
-## Not in scope here
-
-- `@rathnasgala2/theme-default` (S2-T13, the canonical owner of `tooling/`)
-  and the other three sibling themes (`theme-flashy`, `theme-minimal`, `theme-zebra`) — S2-T14
-  covers all four together, each its own repository and commit.
-- `infra/.github/workflows/theme-release.yml` and this repository's own
-  `.github/workflows/release.yaml` caller — S2-T11 (infra, REMOTE-ONLY).
-- Playwright/axe-core browser conformance, no-JS/keyboard/400%-zoom
-  journeys, manual AT scripts — S2-T22.
+CSS is limited to the root scope and the template's published styling hooks,
+contains no `@import`, external `url()`, `outline: none` or script
+constructs, and every stylesheet is one `@layer` block matching `theme.json`.
+Contrast (WCAG 2.2 AA) is checked for both palettes by `contrast:check`.
+The shared tooling README describes each gate.

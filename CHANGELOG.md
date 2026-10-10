@@ -4,6 +4,30 @@ All notable changes to `@rathnasgala2/theme-amaze` are documented here.
 
 ## Unreleased
 
+## 3.0.0 - 2026-10-10
+
+Breaking. This theme moves to theme contract 3 and the approved redesign's
+Amaze look (editorial magazine: serif display type, generous measure, magenta
+accent), with no compatibility with 2.x.
+
+- `theme.json` now carries the 116-token contract (schema 3.0.0) with the
+  Amaze values, `contractVersion` 3.0.0, `templateRange` `^3.0.0` and the
+  template styling contract 3.0.0 digest. The old 35-token catalog and its
+  token keys are gone. The palette follows the approved preview (cool paper
+  canvas, ink-coloured buttons and section rules), not the 2.x warm paper
+  tones.
+- `tokens.css` is generated from `theme.json` (`tokens:generate`) and checked
+  by `tokens:check`.
+- `components.css` shrank to a few skin rules; layout and components now live
+  in the template's base layer. Only the 11 hooks the CSS uses are listed in
+  `slotHooks`.
+- `print.css` keeps the same rules.
+- Removed `icons/mark.svg` and its `package.json` `files` and release
+  workflow entries; nothing uses it any more.
+- Size budgets raised to 32768 bytes per file and 98304 in total.
+- CI pins the template 3.0.1 and theme-tooling 0.3.0 commits, as
+  `@rathnasgala2/theme-default` 3.0.0 does.
+
 ## 2.1.0 - 2026-09-26
 
 ### Fixed (THD-M6, 2026-09-26 fourth pass)
