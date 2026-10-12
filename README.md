@@ -1,7 +1,7 @@
 # @rathnasgala2/theme-amaze
 
 The Amaze presentation theme (editorial magazine: serif display type, generous measure, magenta accent)
-for Galascribe portable publications (`@rathnasgala2/template@^4.0.0`). A build uses it only when a publication's `appearance.theme`
+for Galascribe portable publications (`@rathnasgala2/template@^4.1.0`). A build uses it only when a publication's `appearance.theme`
 names it. This package is a **closed, passive file set**: JSON and CSS
 only, no JavaScript, no build step, no runtime dependency, no lifecycle
 script. A missing selected theme fails a build rather than silently changing
@@ -29,7 +29,7 @@ theme selects the Editorial composition and supplies its established
 - `package.json`: exactly `name`, `version`, `license`, `repository`, `files`.
 - `theme.json`: validated against `urn:gala:schema:theme-contract:2.0.0`. It
   carries the contract-4 identity and Editorial composition,
-  `templateRange` (`^4.0.0`), the stylesheet/layer/hook projection, both
+  `templateRange` (`^4.1.0`), the stylesheet/layer/hook projection, both
   palettes for all 116 tokens, asset digests, size budgets, and the
   generation-4 `stylingContractDigest`.
 - `tokens.css`: generated from `theme.json` by `tokens:generate`. Never edit
