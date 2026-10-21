@@ -2,9 +2,9 @@
   "schemaId": "urn:gala:schema:theme-contract:2.0.0",
   "schemaVersion": "2.0.0",
   "themeId": "amaze",
-  "package": "@rathnasgala2/theme-amaze@4.1.0",
-  "contractVersion": "4.0.0",
-  "templateRange": "^4.1.0",
+  "package": "@rathnasgala2/theme-amaze@4.2.0",
+  "contractVersion": "4.1.0",
+  "templateRange": "^4.4.0",
   "stylesheets": ["tokens.css", "components.css", "print.css"],
   "cssLayers": ["gala-tokens", "gala-components", "gala-print"],
   "slotHooks": [
@@ -702,15 +702,15 @@
     "fixture-token-catalog-contrast"
   ],
   "browserPolicyRef": "gala-theme-css-v2-20211224",
-  "integrity": "sha256:9430958c7d0b3b53b8fb9ec0c01c0a2a5528ca3697eefddbd2e2877bc5138b68",
+  "integrity": "sha256:96f3c58a0ac927dc68f11cd61f8500f85285c899171271c670367ebab5d83671",
   "budgets": {
     "maximumFileBytes": "32768",
     "maximumTotalBytes": "98304",
     "maximumFiles": 8
   },
-  "fixtureDigest": "sha256:75267c3c8593f553e3dde7265593e4c0c5582139bb4344ecb0a3b768c6e0f4c4",
-  "evidenceDigest": "sha256:f37778c1f81ed45e4187064ddcb2eda5cabf322f802779750f5dbc80443bdb22",
-  "stylingContractDigest": "sha256:63a76754b591a3cda91a4be1f43bdb3fe1d44cf4f9be766154f3944a043399b5",
+  "fixtureDigest": "sha256:13ed5fe2ae941d682c86f4a0ca9974b8b38285e8f95db295bb447bf127df95d2",
+  "evidenceDigest": "sha256:399058541a0c6cdc4332c973d84c055339dcb8e2d110714420b2b19b1fc569c0",
+  "stylingContractDigest": "sha256:4afdcb555d21fc205ab332a9e8996a09e1eb607053353c399eb070d0f0525f29",
   "composition": {
     "schemaId": "urn:gala:schema:template-composition:2.0.0",
     "schemaVersion": "2.0.0",
