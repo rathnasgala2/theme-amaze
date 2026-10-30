@@ -4,6 +4,15 @@ All notable changes to `@rathnasgala2/theme-amaze` are documented here.
 
 ## Unreleased
 
+## 4.2.1 - 2026-10-30
+
+- The card is flat, as its tokens always said: it paints nothing (no
+  background, border or shadow), so the title, excerpt and meta line up with
+  the media's left edge instead of sitting flush against the edges of a
+  surface-coloured slab. The hover and focus behaviour is unchanged.
+- Gated by theme-tooling's new card inset check (`visual:check`): a painted
+  card keeps its text at least 12px inside its left, right and bottom edges.
+
 ## 4.2.0 - 2026-10-21
 
 - Built against template 4.4.0 and styling contract 4.1.0 (new

@@ -1,6 +1,12 @@
 @layer gala-components {
   /* Skin rules only: the template's gala-base layer owns layout. */
+  /* A flat magazine card: the base layer paints every card with the surface
+     colour, which here differs from the canvas and left the text flush
+     against the edges of a slab. This theme's card paints nothing (the
+     tokens already say no border, no shadow, no inset), so the title,
+     excerpt and meta line up with the media's left edge. */
   [data-gala-publication-root] .g-card {
+    background: transparent;
     box-shadow: var(--gala-shadow-card);
     transition-duration: var(--gala-duration-base);
   }
