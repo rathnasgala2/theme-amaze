@@ -10,8 +10,15 @@ All notable changes to `@rathnasgala2/theme-amaze` are documented here.
   background, border or shadow), so the title, excerpt and meta line up with
   the media's left edge instead of sitting flush against the edges of a
   surface-coloured slab. The hover and focus behaviour is unchanged.
-- Gated by theme-tooling's new card inset check (`visual:check`): a painted
-  card keeps its text at least 12px inside its left, right and bottom edges.
+- Row cards (author and listing pages) stack the media above the text at 640px
+  and below. With the card flat, the base layer's side padding on the row body
+  (16px) left the text indented from the image above it; the stacked body now
+  has `padding: 1rem 0`, so the text aligns with the media's left edge. Side
+  by side (above 640px) the padding is unchanged.
+- Declares the `ui-card-body` and `ui-card-row` slot hooks the new rule uses.
+- Gated by theme-tooling's new card checks (`visual:check`): a painted card
+  keeps its text at least 12px inside its left, right and bottom edges, and a
+  flat card with stacked media aligns its text with the media's start edge.
 
 ## 4.2.0 - 2026-10-21
 

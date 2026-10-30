@@ -11,6 +11,16 @@
     transition-duration: var(--gala-duration-base);
   }
 
+  /* Rows stack the media above the text at 640px and below (the base layer's
+     breakpoint). The card paints nothing, so the text lines up with the
+     media's edge: 1rem 0 is the base layer's own block padding at this width
+     with the sides removed. Side by side, the padding keeps text off the image. */
+  @media (max-width: 640px) {
+    [data-gala-publication-root] .g-card-row .g-card-body {
+      padding: 1rem 0;
+    }
+  }
+
   [data-gala-publication-root] .g-card:hover {
     box-shadow: var(--gala-shadow-card-hover);
     transform: translate(var(--gala-lift-x), var(--gala-lift-y));
