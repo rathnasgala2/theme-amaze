@@ -4,6 +4,10 @@ All notable changes to `@rathnasgala2/theme-amaze` are documented here.
 
 ## Unreleased
 
+## 4.2.2 - 2026-11-26
+
+- Digests regenerated for theme-tooling 186f9cb, whose contrast check also measures the muted panel text over the panel gradient. No visual change.
+
 ## 4.2.1 - 2026-10-30
 
 - The card is flat, as its tokens always said: it paints nothing (no
